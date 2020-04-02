@@ -1,0 +1,16 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.2.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
