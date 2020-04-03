@@ -1,0 +1,7 @@
+---
+applications:
+- name: my-pal-tracker
+  path: build/libs/my-pal-tracker.jar
+  env:
+    WELCOME_MESSAGE: Hello from Cloud Foundry
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
