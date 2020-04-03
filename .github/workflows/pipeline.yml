@@ -19,7 +19,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: pal-tracker
-        path: build/libs/pal-tracker.jar
+        path: build/libs/my-pal-tracker.jar
 
   deploy:
     needs: build-and-publish
@@ -39,7 +39,7 @@ jobs:
     - name: Deploy to cf
       run: |
         cf login -a "$CF_API_URL" -o "$CF_ORG" -s "$CF_SPACE" -u "$CF_USERNAME" -p "$CF_PASSWORD"
-        cf push -p ./pal-tracker/pal-tracker.jar
+        cf push -p ./pal-tracker/my-pal-tracker.jar
       env:
         CF_API_URL: ${{ secrets.CF_API_URL }}
         CF_ORG: ${{ secrets.CF_ORG }}
