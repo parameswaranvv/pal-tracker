@@ -16,6 +16,9 @@ jobs:
     - name: Create test database
       run: |
         mysql -uroot -proot < databases/tracker/create_databases.sql
+        mysql -u tracker
+        use tracker_test;
+        describe time_entries;
         ./gradlew testMigrate
     - name: Build with Gradle
       run: ./gradlew build
