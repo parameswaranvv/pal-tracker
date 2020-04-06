@@ -5,11 +5,16 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import io.pivotal.pal.tracker.JdbcTimeEntryRepository;
 import io.pivotal.pal.tracker.TimeEntry;
 import io.pivotal.pal.tracker.TimeEntryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.StringUtils;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +22,18 @@ import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 public class JdbcTimeEntryRepositoryTest {
     private TimeEntryRepository subject;
     private JdbcTemplate jdbcTemplate;
 
+    private String DEFAULT_LOCAL_DB_URL = "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false";
+
     @BeforeEach
     public void setUp() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
+		String envJDBCUrl = System.getenv("SPRING_DATASOURCE_URL");
+		dataSource.setUrl(StringUtils.isEmpty(envJDBCUrl) ? DEFAULT_LOCAL_DB_URL : envJDBCUrl);
 
         subject = new JdbcTimeEntryRepository(dataSource);
 

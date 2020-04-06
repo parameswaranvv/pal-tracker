@@ -1,8 +1,10 @@
 package test.pivotal.pal.trackerapi;
 
 import com.jayway.jsonpath.DocumentContext;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import io.pivotal.pal.tracker.PalTrackerApplication;
 import io.pivotal.pal.tracker.TimeEntry;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,9 +13,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.TimeZone;
 
 import static com.jayway.jsonpath.JsonPath.parse;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +33,20 @@ public class TimeEntryApiTest {
     private final long projectId = 123L;
     private final long userId = 456L;
     private TimeEntry timeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8);
+
+	private String DEFAULT_LOCAL_DB_URL = "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false";
+
+	@BeforeEach
+	public void setUp() throws Exception {
+		MysqlDataSource dataSource = new MysqlDataSource();
+		String envJDBCUrl = System.getenv("SPRING_DATASOURCE_URL");
+		dataSource.setUrl(StringUtils.isEmpty(envJDBCUrl) ? DEFAULT_LOCAL_DB_URL : envJDBCUrl);
+
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.execute("TRUNCATE time_entries");
+
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	}
 
     @Test
     public void testCreate() throws Exception {
