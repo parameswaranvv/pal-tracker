@@ -15,11 +15,11 @@ jobs:
         java-version: 11
     - name: Create test database
       run: |
-        mysql -uroot -proot < databases/tracker/create_databases.sql
+        mysql -uroot < databases/tracker/create_databases.sql
         mysql -u tracker
         use tracker_test;
         describe time_entries;
-#        ./gradlew testMigrate
+        ./gradlew testMigrate
     - name: Build with Gradle
       run: ./gradlew build
     - name: Publish artifact
