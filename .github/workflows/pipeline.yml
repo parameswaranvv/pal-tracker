@@ -24,7 +24,7 @@ jobs:
       env:
         PORT: ${{ job.services.mariadb.ports[3306] }}
       run: |
-        mysqladmin -uroot -P $PORT< databases/tracker/create_databases.sql
+        mysqladmin -uroot --port=${{ job.services.mariadb.ports[3306] }}< databases/tracker/create_databases.sql
         mysql -u tracker
         use tracker_test;
         describe time_entries;
