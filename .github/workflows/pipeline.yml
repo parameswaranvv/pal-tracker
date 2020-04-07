@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo systemctl start mysql
         mysql -uroot -proot < databases/tracker/create_databases.sql
-        ./gradlew testMigrate
+        ./gradlew testMigrate --debug
     - name: Build with Gradle
       run: ./gradlew build --debug
     - name: Publish artifact
