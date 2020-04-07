@@ -42,7 +42,7 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository {
 
 	@Override
 	public TimeEntry find(long nonExistentTimeEntryId) {
-		String sql = "SELECT * FROM TIME_ENTRIES where id = ?";
+		String sql = "SELECT * FROM time_entries where id = ?";
 		List<TimeEntry> entries = jdbcTemplate.query(sql, new Object[] { nonExistentTimeEntryId }, (rs, rowNum) -> {
 			TimeEntry entry = new TimeEntry();
 			entry.setId(rs.getLong(1));
@@ -58,7 +58,7 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository {
 
 	@Override
 	public List list() {
-		String sql = "SELECT * FROM TIME_ENTRIES";
+		String sql = "SELECT * FROM time_entries";
 		return jdbcTemplate.query(sql, (rs, rowNum) -> {
 			TimeEntry entry = new TimeEntry();
 			entry.setId(rs.getLong(1));

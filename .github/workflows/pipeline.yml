@@ -20,11 +20,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Create test database and run tests
+    - name: Create test database
       run: |
         sudo systemctl start mysql
         mysql -uroot -proot < databases/tracker/create_databases.sql
-        ./gradlew testMigrate build --debug
+        ./gradlew testMigrate
+    - name: Build with Gradle
+      run: ./gradlew build
     - name: Publish artifact
       uses: actions/upload-artifact@v1
       with:
