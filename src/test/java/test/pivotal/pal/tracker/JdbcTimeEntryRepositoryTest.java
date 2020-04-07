@@ -33,6 +33,7 @@ public class JdbcTimeEntryRepositoryTest {
     public void setUp() {
         MysqlDataSource dataSource = new MysqlDataSource();
 		String envJDBCUrl = System.getenv("SPRING_DATASOURCE_URL");
+		System.out.println("JDBC URL " + envJDBCUrl);
 		dataSource.setUrl(StringUtils.isEmpty(envJDBCUrl) ? DEFAULT_LOCAL_DB_URL : envJDBCUrl);
 
         subject = new JdbcTimeEntryRepository(dataSource);
