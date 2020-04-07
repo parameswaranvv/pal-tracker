@@ -8,11 +8,11 @@ jobs:
   build-and-publish:
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:latest
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
-          - 3306:3306
+          - 3306
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -21,8 +21,10 @@ jobs:
       with:
         java-version: 11
     - name: Create test database
+      env:
+        PORT: ${{ job.services.mariadb.ports[3306] }}
       run: |
-        mysql -uroot < databases/tracker/create_databases.sql
+        mysqladmin -uroot -P "$PORT"< databases/tracker/create_databases.sql
         mysql -u tracker
         use tracker_test;
         describe time_entries;
