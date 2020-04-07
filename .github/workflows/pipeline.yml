@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo systemctl start mysql
         mysql -uroot -proot < databases/tracker/create_databases.sql
-#        mysql -uroot --port=${{ job.services.mysql.ports[3306] }} < databases/tracker/create_databases.sql
+#       mysql -uroot --port=${{ job.services.mysql.ports[3306] }} < databases/tracker/create_databases.sql
         mysql -u tracker
         use tracker_test;
         describe time_entries;
